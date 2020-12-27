@@ -1,10 +1,10 @@
 ETH-Scanner
 
-The customized dashboard for tracking price of ERC-20 tokens
+A customized dashboard for tracking price of ERC-20 tokens
 
 Functionality:
 
-User can post a contract address, and the corresponding token will be added to the dashboard
+User can post a contract address, and the corresponding token will be added to the dashboard.
 Each token has its own tile that contains:
     
     Image, Ticker, Description, Current Price, Price Change, Official Website Link
