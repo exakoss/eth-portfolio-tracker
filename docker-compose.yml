@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  # Create frontend container
+  frontend: # Name of our service
+    build: ./frontend # path to dockerfile
+    ports: # Port binding to host from docker container
+      - "3000:3000" # Bind port 3000 of host to 3000 of container
+    container_name: eth-frontend-docker
+    restart: always # What to do if container crashes
+    links:
+      - backend
+  # Create backend container
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    container_name: eth-backend-docker
+    restart: always
+    depends_on:
+      - db
+    environment:
+      SEQ_DB: docker
+      SEQ_USER: docker
+      SEQ_PW: docker
+      DATABASE_URL: db
+  # Create database container
+  db:
+    build: ./postgres
+    ports:
+      - "5432:5432"
+    container_name: eth-postgres-docker
+    restart: always
+

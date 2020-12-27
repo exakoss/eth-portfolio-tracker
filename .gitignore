@@ -1,0 +1,12 @@
+# WebStorm folder
+/.idea
+
+# Frontend and backend node modules
+/frontend/node_modules
+/backend/node_modules
+
+#Production build
+/build
+
+#Miscellanous
+/backend/.env
