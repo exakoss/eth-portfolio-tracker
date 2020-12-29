@@ -12,20 +12,21 @@ const TokenTile = ({token, timeline, id}) => {
     switch (timeline) {
     case '1D':
       return {
-        text: `1 Day Price Difference: ${token.price.diff}`,
+        text: `1 Day Price Difference: ${token.price.diff}%`,
         value: token.price.diff
       }
     case '7D':
-      return {
-        text: `7 Day Price Difference: ${token.price.diff7d}`,
+      if (token.price.diff7d !== undefined) return {
+        text: `7 Day Price Difference: ${token.price.diff7d}%`,
         value: token.price.diff7d
-      }
+      };
+      else return {}
     case '30D':
-      return {
+      if (token.price.diff30d !== undefined) return {
         value: token.price.diff30d.toFixed(2),
-        text: `30 Day Price Difference: ${token.price.diff30d.toFixed(2)}`
-
-      }
+        text: `30 Day Price Difference: ${token.price.diff30d.toFixed(2)}%`
+      };
+      else return {}
     default:
       return {
         text: `1 Day Price Difference: ${token.price.diff}`,
@@ -43,7 +44,7 @@ const TokenTile = ({token, timeline, id}) => {
     </Card.Body>
     <ListGroup className="list-group-flush">
       <ListGroupItem className='token-tile-price'>Price: {toMoney(token.price.rate)}</ListGroupItem>
-      <ListGroupItem className='token-tile-price-change' variant={(getTimeline().value > 0) ? 'success' : 'danger'}>{getTimeline().text}%</ListGroupItem>
+      <ListGroupItem className='token-tile-price-change' variant={(getTimeline().value > 0) ? 'success' : 'danger'}>{(getTimeline().text !== undefined) ? getTimeline().text : 'Data for this time period is not available yet' }</ListGroupItem>
       <ListGroupItem className='token-tile-market-cap'>MarketCap: {toMoney(token.price.marketCapUsd)}</ListGroupItem>
     </ListGroup>
     <Card.Body>
