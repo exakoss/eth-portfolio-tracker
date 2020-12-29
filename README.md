@@ -9,7 +9,7 @@ Each token has its own tile that contains:
     
     Image, Ticker, Description, Current Price, Price Change, Official Website Link
 
-Tokens are sorted by two parameters: Market Cap and Gain/Loss. User can also choose which timeframe the price diff will be shown at: 1 day, 7 days or 30 days
+Tokens are sorted by three parameters: Market Cap, Price and Gain/Loss. User can also choose which timeframe the price difference will be shown at: 1 day, 7 days or 30 days
 
 Chosen Tokens are being stored in a postgreSQL database. Their quotes are being updated on the app restart
 

@@ -22,8 +22,9 @@ const TokenTile = ({token, timeline, id}) => {
       }
     case '30D':
       return {
-        text: `30 Day Price Difference: ${token.price.diff30d.toFixed(2)}`,
-        value: token.price.diff30d.toFixed(2)
+        value: token.price.diff30d.toFixed(2),
+        text: `30 Day Price Difference: ${token.price.diff30d.toFixed(2)}`
+
       }
     default:
       return {
@@ -58,67 +59,52 @@ const TokenTile = ({token, timeline, id}) => {
 }
 
 const TokenList = () => {
-  const compareMCDescending = (t1, t2) => {
-    const t1MC = parseFloat(t1.info.price.marketCapUsd)
-    const t2MC = parseFloat(t2.info.price.marketCapUsd)
-    if (t1MC > t2MC) {
-      return -1
+  const firstOverSecond = (a,b) => (a > b) ? 1 : -1
+  const secondOverFirst = (a,b) => (a > b) ? -1 : 1
+  const compareDescending = (filter) => {
+    if (filter === 'DESCENDING_MC') return (t1,t2) => {
+      const t1v = parseFloat(t1.info.price.marketCapUsd)
+      const t2v = parseFloat(t2.info.price.marketCapUsd)
+      return secondOverFirst(t1v,t2v)
     }
-    if (t1MC < t2MC) {
-      return 1
+    if (filter === 'DESCENDING_PRICE') return (t1,t2) =>  {
+      const t1v = parseFloat(t1.info.price.rate)
+      const t2v = parseFloat(t2.info.price.rate)
+      return secondOverFirst(t1v,t2v)
     }
-    return 0
+
   }
-  const compareMCAscending = (t1, t2) => {
-    const t1MC = parseFloat(t1.info.price.marketCapUsd)
-    const t2MC = parseFloat(t2.info.price.marketCapUsd)
-    if (t1MC > t2MC) {
-      return 1
+  const compareAscending = (filter) => {
+    if (filter === 'ASCENDING_MC') return (t1,t2) => {
+      const t1v = parseFloat(t1.info.price.marketCapUsd)
+      const t2v = parseFloat(t2.info.price.marketCapUsd)
+      return firstOverSecond(t1v,t2v)
     }
-    if (t1MC < t2MC) {
-      return -1
+    if (filter === 'ASCENDING_PRICE') return (t1,t2) =>  {
+      const t1v = parseFloat(t1.info.price.rate)
+      const t2v = parseFloat(t2.info.price.rate)
+      return firstOverSecond(t1v,t2v)
     }
-    return 0
   }
-  const compareGainers = (t1,t2) => {
-    let t1G, t2G
-    if (timelineFilter === '1D') {
-      t1G = t1.info.price.diff
-      t2G = t2.info.price.diff
-    } else if (timelineFilter === '7D') {
-      t1G = t1.info.price.diff7d
-      t2G = t2.info.price.diff7d
-    } else {
-      t1G = t1.info.price.diff30d
-      t2G = t2.info.price.diff30d
+  const compareLosersOrGainers = (filter) => {
+    return (t1,t2) => {
+      let t1v, t2v;
+      if (timelineFilter === '1D') {
+        t1v = t1.info.price.diff
+        t2v = t2.info.price.diff
+      } else if (timelineFilter === '7D') {
+        t1v = t1.info.price.diff7d
+        t2v = t2.info.price.diff7d
+      } else {
+        t1v = t1.info.price.diff30d
+        t2v = t2.info.price.diff30d
+      }
+      if (filter === 'GAINERS') {
+        return secondOverFirst(t1v,t2v)
+      } else if (filter === 'LOSERS') {
+        return firstOverSecond(t1v,t2v)
+      }
     }
-    if (t1G > t2G) {
-      return -1
-    }
-    if (t1G < t2G) {
-      return 1
-    }
-    return 0
-  }
-  const compareLosers = (t1,t2) => {
-    let t1L, t2L
-    if (timelineFilter === '1D') {
-      t1L = t1.info.price.diff
-      t2L = t2.info.price.diff
-    } else if (timelineFilter === '7D') {
-      t1L = t1.info.price.diff7d
-      t2L = t2.info.price.diff7d
-    } else {
-      t1L = t1.info.price.diff30d
-      t2L = t2.info.price.diff30d
-    }
-    if (t1L > t2L) {
-      return 1
-    }
-    if (t1L < t2L) {
-      return -1
-    }
-    return 0
   }
 
   const initTokens = useSelector(state => state.tokens)
@@ -130,13 +116,17 @@ const TokenList = () => {
     case 'NONE':
       return inTokens
     case 'DESCENDING_MC':
-      return inTokens.sort(compareMCDescending)
+      return inTokens.sort(compareDescending('DESCENDING_MC'))
     case 'ASCENDING_MC':
-      return inTokens.sort(compareMCAscending)
+      return inTokens.sort(compareAscending('ASCENDING_MC'))
+    case 'DESCENDING_PRICE':
+      return inTokens.sort(compareDescending('DESCENDING_PRICE'))
+    case 'ASCENDING_PRICE':
+      return inTokens.sort(compareAscending('ASCENDING_PRICE'))
     case 'LOSERS':
-      return inTokens.sort(compareLosers)
+      return inTokens.sort(compareLosersOrGainers('LOSERS'))
     case 'GAINERS':
-      return inTokens.sort(compareGainers)
+      return inTokens.sort(compareLosersOrGainers('GAINERS'))
     default:
       return inTokens
   }}

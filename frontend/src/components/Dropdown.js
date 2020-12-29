@@ -28,10 +28,22 @@ const MCDropDown = () => {
   )
 }
 
+const PriceDropDown = () => {
+  const dispatch = useDispatch()
+  return (
+    <DropdownButton id="price-dropdown-item" title="Price" variant='dark'>
+      <Dropdown.Header>Sort tokens according to their price</Dropdown.Header>
+      <Dropdown.Item as="button" onClick={() => dispatch(mcFilterChange('NONE'))}>None</Dropdown.Item>
+      <Dropdown.Item as="button" onClick={() => dispatch(mcFilterChange('DESCENDING_PRICE'))}>Highest First</Dropdown.Item>
+      <Dropdown.Item as="button" onClick={() => dispatch(mcFilterChange('ASCENDING_PRICE'))}>Lowest First</Dropdown.Item>
+    </DropdownButton>
+  )
+}
+
 const GainDropDown = () => {
   const dispatch = useDispatch()
   return (
-    <DropdownButton id="mc-dropdown-item" title="Gain or Loss" variant='success'>
+    <DropdownButton id="gain-dropdown-item" title="Gain or Loss" variant='success'>
       <Dropdown.Header>Sort tokens according to their Gain or Loss</Dropdown.Header>
       <Dropdown.Item as="button" onClick={() => dispatch(mcFilterChange('NONE'))}>None</Dropdown.Item>
       <Dropdown.Item as="button" onClick={() => dispatch(mcFilterChange('GAINERS'))}>Gainers First</Dropdown.Item>
@@ -44,6 +56,7 @@ const DropDown = () => {
   return(
     <div className='dropdown'>
       <MCDropDown/>
+      <PriceDropDown/>
       <GainDropDown/>
       <TimelineDropDown/>
     </div>
