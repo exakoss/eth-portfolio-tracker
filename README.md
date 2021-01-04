@@ -30,9 +30,22 @@ DevOps:
     Docker
 
 Installation and Start:
+
     0. Make sure that you got *docker* and *docker-compose* installed
     1. Download the project
     2. Run *docker-compose up --build* in the root directory of the project
-       This command will create images for each microservice (frontend. backend and PostgreSQL db) and run containers
+       This command will create images for each microservice (frontend, backend and PostgreSQL db) and run containers
     3. Go to *localhost:3000* in your browser
     4. Enjoy!
+
+Roadmap:
+
+    Learn GraphQL and rebuild Backend with Apollo -- Q1 2021
+    Make searching by name possible for TOP 50 tokens -- Q1 2021
+    Create User Authentication -- Q2 2021
+    Deploy app to Azure or AWS -- Q2 2021
+    Build functional portfolio (quantity and init price of tokens) -- Q2 2021
+    Learn React Native and make a mobile app -- Q3 2021
+    Implement premium real life Uniswap data feed -- ??? 
+        
+    
