@@ -1,4 +1,4 @@
-ETH-Scanner
+ETH Price Tracker
 
 A customized dashboard for tracking price of ERC-20 tokens
 
